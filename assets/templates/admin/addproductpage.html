@@ -1,0 +1,209 @@
+{% extends 'admin/adminbase.html' %}
+{% load static %}
+
+{% block contents %}
+<br><br><br><br><br>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Product</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Container styling */
+        .container {
+            background-color: #f8f9fa; /* Light background color */
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 1000px; /* Increased max width for a wider layout */
+            margin: auto;
+            margin-top: 50px;
+        }
+
+        /* Title styling */
+        h2.text-center {
+            font-size: 2.5rem; /* Adjusted font size */
+            color: #000; /* Changed title color to black */
+            font-weight: bold;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Form control styling */
+        .form-control, .form-control-file, .form-control:focus {
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Label styling */
+        label {
+            font-weight: bold;
+            color: #343a40; /* Dark text color */
+            margin-bottom: 10px;
+        }
+
+        /* File input button styling */
+        .form-control-file {
+            padding: 8px;
+            cursor: pointer;
+            background-color: #e9ecef; /* Light background for file input */
+        }
+
+        /* Submit button styling */
+        .btn-primary {
+            background: linear-gradient(135deg, #007bff 0%, #6bc1ff 100%);
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #fff;
+            border-radius: 8px;
+            transition: background 0.4s ease;
+            width: 100%; /* Full width */
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.2);
+        }
+
+        /* Submit button hover effect */
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #0062cc 0%, #5daeff 100%);
+            box-shadow: 0 7px 25px rgba(0, 123, 255, 0.3);
+        }
+
+        /* Margin below form group */
+        .form-group {
+            margin-bottom: 20px; /* Spacing between form elements */
+        }
+
+        /* Placeholder text styling */
+        .form-control::placeholder {
+            color: #6c757d; /* Placeholder text color */
+        }
+
+        /* Center align form */
+        .row.justify-content-center {
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Your form and other content goes here -->
+
+</body>
+</html>
+
+
+<div class="container py-4">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-12"> <!-- Changed to col-md-12 for full width -->
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-header">
+                    <h2 class="text-center">Upload Product</h2>
+                </div>
+                <div class="card-body">
+                    <form action="/uploadproduct/" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="name">Product Name:</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter product name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="imageInput">Upload Product Image:</label>
+                            <input type="file" class="form-control-file" id="imageInput" name="image" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="dropdown1">Select Category:</label>
+                            <select class="form-control" id="dropdown1" name="dropdown1" required>
+                                <option value="" disabled selected>Select a category</option>
+                                <option value="Electronics">Electronics</option>
+                                <option value="Clothing">Clothing</option>
+                                <option value="Homegoods">Home Goods</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="desc">Product Description:</label>
+                            <textarea class="form-control" id="desc" name="desc" placeholder="Enter product description" rows="4" required></textarea>
+                        </div>
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Handle product upload and save to database here -->
+    <!-- Example backend process -->
+    {% block content %}
+    {% endblock %}
+</div>
+
+<script>
+    // You can add your JavaScript functionality here if needed
+    document.querySelector('form').addEventListener('submit', function() {
+        alert('Product uploaded successfully!');
+    });
+</script>
+
+</body>
+</html>
+
+
+<section class="products-list-section">
+    <div class="container py-4">
+        <div class="row">
+            <!-- Clothing Products -->
+            <div class="col-md-4">
+                <h3 class="text-center">Clothing</h3>
+                <div class="list-group">
+                    {% for product in clothing_products %}
+                    <div class="list-group-item text-center">
+                        <h5>{{ product.name }}</h5>
+                        <img src="{{ product.image.url }}" style="width: 100px; height: 100px;" class="img-fluid">
+                        <p>{{ product.desc }}</p>
+                        <a class="btn btn-danger btn-sm" href="/AdminDeleteproduct/?uid={{ product.id }}" 
+                           onclick="return confirm('Are you sure you want to delete this product?')">Delete</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- Electronics Products -->
+            <div class="col-md-4">
+                <h3 class="text-center">Electronics</h3>
+                <div class="list-group">
+                    {% for product in electronics_products %}
+                    <div class="list-group-item text-center">
+                        <h5>{{ product.name }}</h5>
+                        <img src="{{ product.image.url }}" style="width: 100px; height: 100px;" class="img-fluid">
+                        <p>{{ product.desc }}</p>
+                        <a class="btn btn-danger btn-sm" href="/AdminDeleteproduct/?uid={{ product.id }}" 
+                           onclick="return confirm('Are you sure you want to delete this product?')">Delete</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- Home Goods Products -->
+            <div class="col-md-4">
+                <h3 class="text-center">Home Goods</h3>
+                <div class="list-group">
+                    {% for product in homegoods_products %}
+                    <div class="list-group-item text-center">
+                        <h5>{{ product.name }}</h5>
+                        <img src="{{ product.image.url }}" style="width: 100px; height: 100px;" class="img-fluid">
+                        <p>{{ product.desc }}</p>
+                        <a class="btn btn-danger btn-sm" href="/AdminDeleteproduct/?uid={{ product.id }}" 
+                           onclick="return confirm('Are you sure you want to delete this product?')">Delete</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

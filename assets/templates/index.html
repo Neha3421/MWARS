@@ -1,0 +1,257 @@
+{% extends 'base.html' %} {% load static %} {% block contents %}
+
+<!-- ======= Hero Section ======= -->
+<section id="hero" class="d-flex flex-column justify-content-center">
+  <div class="container" data-aos="zoom-in" data-aos-delay="100">
+    <h1>Multi-website Advertisement Recommendation system</h1>
+  </div>
+</section>
+<!-- End Hero -->
+
+<main id="main">
+  <!-- ======= About Section ======= -->
+  <section id="about" class="about">
+    <div class="container" data-aos="fade-up">
+      <div class="section-title text-center">
+        <h2>Abstract</h2>
+      </div>
+
+      <div
+        class="content p-4"
+        style="
+          background-color: #f9f9f9;
+          border-radius: 10px;
+          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        "
+      >
+        <p
+          style="
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #333;
+            text-align: justify;
+          "
+        >
+          This research shows a new way to make online ads work better with a
+          system called MWARS. Many different online platforms are making it
+          hard for advertisers to know where to put their ads. MWARS uses smart
+          computer programs to look at what users do and like on many websites.
+          The system takes information from many places to give users ads that
+          fit them well.
+        </p>
+        <p
+          style="
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #333;
+            text-align: justify;
+          "
+        >
+          The MWARS uses two kinds of ways to find out what users like. It also
+          uses details from each website to make better suggestions. The system
+          changes over time to keep up with how users act. They tested the
+          system with real data to see if it gives good, different ads that make
+          users happy.
+        </p>
+      </div>
+    </div>
+  </section>
+  <!-- End About Section -->
+
+  <!-- ======= Portfolio Section ======= -->
+  <section id="portfolio" class="portfolio section-bg">
+    <style>
+      .portfolio-wrap {
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px; /* Rounded corners */
+        border: 3px solid #ddd; /* Border around images */
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .portfolio-wrap:hover {
+        transform: scale(1.05); /* Scale on hover */
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Shadow on hover */
+      }
+
+      .portfolio-image {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+        display: block;
+      }
+
+      #portfolio-flters {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        display: flex;
+        justify-content: center;
+      }
+
+      #portfolio-flters li {
+        cursor: pointer;
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #007bff; /* Default blue color */
+        color: white;
+        margin: 0 10px;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      #portfolio-flters li:hover {
+        box-shadow: 0 5px 10px rgba(0, 123, 255, 0.4); /* Shadow on hover */
+        transform: translateY(-3px); /* Slight lift on hover */
+      }
+
+      #portfolio-flters li:active {
+        transform: scale(0.95); /* Scale down slightly on click */
+      }
+
+      #portfolio-flters .filter-active::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background-color: #fff; /* A white line effect to show it's active */
+        animation: active-line 0.3s ease;
+      }
+
+      @keyframes active-line {
+        from {
+          width: 0;
+        }
+        to {
+          width: 100%;
+        }
+      }
+
+      .portfolio-item {
+        margin-bottom: 30px;
+      }
+    </style>
+
+    <div class="container" data-aos="fade-up">
+      <div class="row">
+        <div
+          class="col-lg-12 d-flex justify-content-center"
+          data-aos="fade-up"
+          data-aos-delay="100"
+        >
+          <ul id="portfolio-flters">
+            <li data-filter="*" class="filter-active">All</li>
+            <li data-filter=".filter-app">App</li>
+            <li data-filter=".filter-card">Card</li>
+            <li data-filter=".filter-web">Web</li>
+          </ul>
+        </div>
+      </div>
+
+      <div
+        class="row portfolio-container"
+        data-aos="fade-up"
+        data-aos-delay="200"
+      >
+        <!-- Portfolio Items -->
+        <div class="col-lg-4 col-md-6 portfolio-item filter-app">
+          <div class="portfolio-wrap">
+            <img
+              src="{% static 'img/portfolio/portfolio-1.jpg' %}"
+              class="img-fluid portfolio-image"
+              alt=""
+            />
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 portfolio-item filter-web">
+          <div class="portfolio-wrap">
+            <img
+              src="{% static 'img/portfolio/portfolio-2.jpg' %}"
+              class="img-fluid portfolio-image"
+              alt=""
+            />
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 portfolio-item filter-app">
+          <div class="portfolio-wrap">
+            <img
+              src="{% static 'img/portfolio/portfolio-3.jpg' %}"
+              class="img-fluid portfolio-image"
+              alt=""
+            />
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 portfolio-item filter-card">
+          <div class="portfolio-wrap">
+            <img
+              src="{% static 'img/portfolio/portfolio-4.jpg' %}"
+              class="img-fluid portfolio-image"
+              alt=""
+            />
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 portfolio-item filter-web">
+          <div class="portfolio-wrap">
+            <img
+              src="{% static 'img/portfolio/portfolio-5.jpg' %}"
+              class="img-fluid portfolio-image"
+              alt=""
+            />
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 portfolio-item filter-app">
+          <div class="portfolio-wrap">
+            <img
+              src="{% static 'img/portfolio/portfolio-6.jpg' %}"
+              class="img-fluid portfolio-image"
+              alt=""
+            />
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 portfolio-item filter-card">
+          <div class="portfolio-wrap">
+            <img
+              src="{% static 'img/portfolio/portfolio-7.jpg' %}"
+              class="img-fluid portfolio-image"
+              alt=""
+            />
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 portfolio-item filter-card">
+          <div class="portfolio-wrap">
+            <img
+              src="{% static 'img/portfolio/portfolio-8.jpg' %}"
+              class="img-fluid portfolio-image"
+              alt=""
+            />
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 portfolio-item filter-web">
+          <div class="portfolio-wrap">
+            <img
+              src="{% static 'img/portfolio/portfolio-9.jpg' %}"
+              class="img-fluid portfolio-image"
+              alt=""
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- End Portfolio Section -->
+
+  {% endblock %}
+</main>

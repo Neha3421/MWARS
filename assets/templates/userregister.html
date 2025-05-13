@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contents %}
+
+<section id="contact" class="contact">
+    <div class="container" data-aos="fade-up">
+        <br>
+        <div class="section-title text-center">
+            <h2 class="text-primary">User Registration</h2>
+        </div>
+        <div class="row justify-content-center mt-1">
+            <div class="col-lg-8 mt-5 mt-lg-0">
+                <div class="card shadow-lg border-0 rounded-lg">
+                    <div class="card-header bg-primary text-white text-center py-3">
+                        <h4 class="mb-0">Create Your Account</h4>
+                    </div>
+                    <div class="card-body p-4">
+                        <form action="/userregisteraction/" method="post">
+                            {% csrf_token %}
+                            <!-- Name and Email Fields -->
+                            <div class="row">
+                                <div class="form-group mb-3 col-md-6">
+                                    <label for="name" class="form-label">Your Name</label>
+                                    <input type="text" name="name" class="form-control" id="name" placeholder="Enter your name" required>
+                                </div>
+                                <div class="form-group mb-3 col-md-6">
+                                    <label for="email" class="form-label">Your Email</label>
+                                    <input type="email" name="email" class="form-control" id="email" placeholder="Enter your email" required>
+                                </div>
+                            </div>
+                            <!-- Phone and Password Fields -->
+                            <div class="row">
+                                <div class="form-group mb-3 col-md-6">
+                                    <label for="phone" class="form-label">Your Phone Number</label>
+                                    <input type="text" name="phone" class="form-control" id="phone" placeholder="Enter your phone number" required>
+                                </div>
+                                <div class="form-group mb-3 col-md-6">
+                                    <label for="password" class="form-label">Your Password</label>
+                                    <input type="password" name="password" class="form-control" id="password" placeholder="Enter your password" required>
+                                </div>
+                            </div>
+                            <!-- Register & Login Buttons -->
+                            <div class="d-flex justify-content-between mt-3">
+                                <button type="submit" class="btn btn-primary btn-medium">Register</button>
+                                <a href="{% url 'userlogin' %}" class="btn btn-primary btn-medium">Login</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Custom styles for registration interface */
+    .container {
+        max-width: 900px; /* Intermediate size */
+        margin-top: 50px;
+        padding: 20px;
+    }
+
+    .section-title h2 {
+        font-size: 30px; /* Slightly larger font size */
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .card {
+        border-radius: 10px;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+        box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-header {
+        font-size: 22px;
+        padding: 15px;
+        background-color: #007bff; /* Blue color */
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-control {
+        border-radius: 5px;
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    .form-control:focus {
+        border-color: #007bff; /* Blue focus border */
+        box-shadow: none;
+    }
+
+    /* Medium Button styling */
+    .btn-medium {
+        padding: 12px 20px; /* Adjust padding for consistent height */
+        font-size: 18px; /* Medium font size */
+        border-radius: 5px;
+        width: 150px; /* Set a fixed width for buttons */
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+
+
+
+
+
+<br><br><br><br><br><br>
+{% endblock %}

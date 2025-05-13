@@ -1,0 +1,477 @@
+{% extends 'user/userbase.html' %}
+{% load static %}
+
+{% block contents %}
+<br><br><br>
+
+<div class="container">
+  
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          background-color: #f4f4f4; /* Light grey background */
+          color: black; /* Default text color */
+          padding: 20px;
+        }
+  
+        h1 {
+          text-align: center;
+          color: #333; /* Darker color for the title */
+        }
+  
+        .search-container {
+          display: flex;
+          justify-content: center;
+          margin-bottom: 20px;
+        }
+  
+        input[type="text"] {
+          padding: 10px;
+          width: 300px;
+          font-size: 16px;
+          border-radius: 5px;
+          border: 1px solid #ccc;
+          margin-right: 10px;
+        }
+  
+        button {
+          padding: 10px 20px;
+          background-color: #4caf50;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          font-size: 16px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+        }
+  
+        button:hover {
+          background-color: #45a049;
+        }
+  
+        .tabs {
+          display: flex;
+          justify-content: center;
+          margin-top: 20px;
+        }
+  
+        .tab {
+          margin: 0 10px;
+          padding: 10px 20px;
+          background-color: rgba(0, 123, 255, 0.9);
+          color: white;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+        }
+  
+        .tab:hover {
+          background-color: rgba(0, 86, 179, 0.9);
+        }
+  
+        .grid-container {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+          gap: 20px;
+          padding: 20px;
+        }
+  
+        .grid-item {
+          background-color: rgba(255, 255, 255, 0.9);
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          text-align: center;
+          padding: 15px;
+          transition: transform 0.3s;
+        }
+  
+        .grid-item:hover {
+          transform: scale(1.05); /* Scale effect on hover */
+        }
+  
+        .grid-item img {
+          max-width: 100%;
+          height: auto;
+          border-radius: 8px;
+        }
+        .grid-item h3 {
+            font-size: 18px; /* Decrease font size of product name */
+          }
+        
+        .grid-item button {
+          background-color: rgba(0, 123, 255, 0.9);
+          color: white;
+          border: none;
+          border-radius: 5px;
+          padding: 10px;
+          margin-top: 10px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+        }
+  
+        .grid-item button:hover {
+          background-color: rgba(0, 86, 179, 0.9);
+        }
+  
+        /* Modal styling for no search input */
+        .modal {
+          display: none; /* Hidden by default */
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.8); /* Dark transparent background */
+          justify-content: center;
+          align-items: center;
+        }
+  
+        .modal-content {
+          background-color: white;
+          padding: 30px;
+          border-radius: 10px;
+          text-align: center;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+          width: 400px; /* Adjust the width as needed */
+          height: 200px; /* Adjust the height as needed */
+          max-width: 90%; /* Make it responsive on smaller screens */
+          max-height: 90%; /* Make it responsive on smaller screens */
+        }
+  
+        .modal-content h2 {
+          color: red;
+          margin-bottom: 20px;
+        }
+  
+        .modal-content button {
+          background-color: #4caf50;
+          color: white;
+          padding: 10px 20px;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          font-size: 16px;
+        }
+  
+        .modal-content button:hover {
+          background-color: #45a049;
+        }
+  
+        /* Recommendations styling */
+        .recommendations {
+          margin-top: 20px;
+          text-align: center;
+        }
+  
+        .recommendation-grid {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 20px; /* Spacing between recommendation items */
+        }
+      </style>
+    </head>
+    <body>
+      <h1>Welcome to Shopping Cart</h1>
+  
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Enter product name" />
+        <button onclick="searchProduct()">Search</button>
+      </div>
+  
+      <!-- Tabs for each platform -->
+      <div class="tabs">
+        <div class="tab" onclick="filterPlatform('amazon')">Amazon</div>
+        <div class="tab" onclick="filterPlatform('flipkart')">Flipkart</div>
+        <div class="tab" onclick="filterPlatform('myntra')">Myntra</div>
+        <div class="tab" onclick="filterPlatform('ajio')">Ajio</div>
+        <div class="tab" onclick="filterPlatform('meesho')">Meesho</div>
+      </div>
+  
+      <div class="grid-container" id="productGrid"></div>
+  
+      <div class="recommendations" id="recommendations">
+        <h2 id="recommendationsHeading">
+          Recommended Products Based on Your Frequent Searches:
+        </h2>
+        <div class="recommendation-grid" id="recommendationGrid"></div>
+      </div>
+  
+      <!-- Modal for no input alert -->
+      <div id="noInputModal" class="modal">
+        <div class="modal-content">
+          <h2>You haven't searched anything!</h2>
+          <p>Please enter a product name to search.</p>
+          <button onclick="closeModal()">OK</button>
+        </div>
+      </div>
+      <script>
+        let currentPlatform = ""; // Stores the current selected platform
+      
+        // Initialize search count from local storage or create a new object
+        const searchCounts = JSON.parse(localStorage.getItem("searchCounts")) || {};
+      
+        function searchProduct() {
+          const productName = document.getElementById("searchInput").value;
+          const productGrid = document.getElementById("productGrid");
+          const recommendationGrid = document.getElementById("recommendationGrid");
+          productGrid.innerHTML = ""; // Clear previous results
+          recommendationGrid.innerHTML = ""; // Clear previous recommendations
+      
+          // Check if the search bar is empty
+          if (!productName.trim()) {
+            // Show modal for no input
+            document.getElementById("noInputModal").style.display = "flex";
+            return; // Stop further execution of the function
+          }
+      
+          // Increment search count for the product
+          if (searchCounts[productName]) {
+            searchCounts[productName]++;
+          } else {
+            searchCounts[productName] = 1;
+          }
+      
+          // Update local storage
+          localStorage.setItem("searchCounts", JSON.stringify(searchCounts));
+      
+          // Simulate platform search with dynamic URLs
+          const amazonUrl = `https://www.amazon.com/s?k=${encodeURIComponent(productName)}`;
+          const flipkartUrl = `https://www.flipkart.com/search?q=${encodeURIComponent(productName)}`;
+          const myntraUrl = `https://www.myntra.com/${encodeURIComponent(productName)}`;
+          const ajioUrl = `https://www.ajio.com/search/?text=${encodeURIComponent(productName)}`;
+          const meeshoUrl = `https://www.meesho.com/search?q=${encodeURIComponent(productName)}`;
+      
+          // Generate a grid of 5 simulated products
+          for (let i = 1; i <= 5; i++) {
+            let productCard = `
+            <div class="grid-item">
+              <img src="https://via.placeholder.com/200?text=${encodeURIComponent(productName)}%20${i}" alt="${productName} - Item ${i}">
+              <h3>${productName} - Item ${i}</h3>`;
+      
+            // Link based on selected platform
+            if (currentPlatform === "amazon") {
+              productCard += `<a href="${amazonUrl}" target="_blank"><button>View on Amazon</button></a>`;
+            } else if (currentPlatform === "flipkart") {
+              productCard += `<a href="${flipkartUrl}" target="_blank"><button>View on Flipkart</button></a>`;
+            } else if (currentPlatform === "myntra") {
+              productCard += `<a href="${myntraUrl}" target="_blank"><button>View on Myntra</button></a>`;
+            } else if (currentPlatform === "ajio") {
+              productCard += `<a href="${ajioUrl}" target="_blank"><button>View on Ajio</button></a>`;
+            } else if (currentPlatform === "meesho") {
+              productCard += `<a href="${meeshoUrl}" target="_blank"><button>View on Meesho</button></a>`;
+            }
+      
+            productCard += `</div>`;
+            productGrid.innerHTML += productCard;
+          }
+      
+          // Show recommendations if any product has been searched more than 2 times
+          showRecommendations();
+        }
+      
+        // Function to show recommended products
+        function showRecommendations() {
+          const recommendationGrid = document.getElementById("recommendationGrid");
+          const recommendationsHeading = document.getElementById("recommendationsHeading");
+      
+          // Clear previous recommendations
+          recommendationGrid.innerHTML = "";
+      
+          let hasRecommendations = false; // Flag to check if there are recommendations
+      
+          for (const [product, count] of Object.entries(searchCounts)) {
+            if (count > 2) {
+              hasRecommendations = true; // Found at least one recommendation
+              const productLink = getPlatformLink(product);
+              recommendationGrid.innerHTML += `
+              <div class="grid-item">
+                <img src="https://via.placeholder.com/200?text=${encodeURIComponent(product)}" alt="${product}">
+                <h3>${product}</h3>
+                <a href="${productLink}" target="_blank"><button>View More</button></a>
+              </div>`;
+            }
+          }
+      
+          // Show or hide the heading based on recommendations
+          recommendationsHeading.style.display = hasRecommendations ? "block" : "none";
+        }
+      
+        // Function to get the link of the recommended product based on current platform
+        function getPlatformLink(product) {
+          if (currentPlatform === "amazon") {
+            return `https://www.amazon.com/s?k=${encodeURIComponent(product)}`;
+          } else if (currentPlatform === "flipkart") {
+            return `https://www.flipkart.com/search?q=${encodeURIComponent(product)}`;
+          } else if (currentPlatform === "myntra") {
+            return `https://www.myntra.com/${encodeURIComponent(product)}`;
+          } else if (currentPlatform === "ajio") {
+            return `https://www.ajio.com/search/?text=${encodeURIComponent(product)}`;
+          } else if (currentPlatform === "meesho") {
+            return `https://www.meesho.com/search?q=${encodeURIComponent(product)}`;
+          }
+          return "#"; // Default fallback link
+        }
+      
+        // Function to filter products by platform
+        function filterPlatform(platform) {
+          currentPlatform = platform;
+          searchProduct(); // Re-run the search when a platform is selected
+        }
+      
+        // Function to search from history
+        function searchProductFromHistory(product) {
+          document.getElementById("searchInput").value = product; // Set the input to the history product
+          searchProduct(); // Run the search for that product
+        }
+      
+        // Function to close the modal
+        function closeModal() {
+          document.getElementById("noInputModal").style.display = "none";
+        }
+      </script>
+      
+    
+    </body>
+  </html>
+  
+
+    <!-- Section for Electronics -->
+    <div class="section">
+        <h2 class="mt-5 mb-4 text-center">Electronics</h2>
+        <div class="row">
+            {% for product in electronics %}
+            <div class="col-md-3 mb-4">
+                <div class="card h-100 shadow-sm hover-shadow-lg">
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text text-muted">{{ product.desc|truncatewords:20 }}</p>
+                        <a href="{% url 'product_details' product.id %}" class="btn btn-outline-primary mt-auto">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center">
+            <a href="{% url 'view_more_electronics' %}" class="btn btn-secondary mb-5">View More</a>
+        </div>
+    </div>
+
+    <!-- Section for Clothing -->
+    <div class="section">
+        <h2 class="mt-5 mb-4 text-center">Clothing</h2>
+        <div class="row">
+            {% for product in clothing %}
+            <div class="col-md-3 mb-4">
+                <div class="card h-100 shadow-sm hover-shadow-lg">
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text text-muted">{{ product.desc|truncatewords:20 }}</p>
+                        <a href="{% url 'product_details' product.id %}" class="btn btn-outline-primary mt-auto">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center">
+            <a href="{% url 'view_more_clothing' %}" class="btn btn-secondary mb-5">View More</a>
+        </div>
+    </div>
+
+    <!-- Section for Home Goods -->
+    <div class="section">
+        <h2 class="mt-5 mb-4 text-center">Home Goods</h2>
+        <div class="row">
+            {% for product in homegoods %}
+            <div class="col-md-3 mb-4">
+                <div class="card h-100 shadow-sm hover-shadow-lg">
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text text-muted">{{ product.desc|truncatewords:20 }}</p>
+                        <a href="{% url 'product_details' product.id %}" class="btn btn-outline-primary mt-auto">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center">
+            <a href="{% url 'view_more_homegoods' %}" class="btn btn-secondary mb-5">View More</a>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+<script>
+    document.querySelector('input[name="q"]').addEventListener('input', function() {
+        var clearButton = this.nextElementSibling.querySelector('button');
+        if (this.value.length > 0) {
+            clearButton.style.display = 'block';
+        } else {
+            clearButton.style.display = 'none';
+        }
+    });
+</script>
+
+<style>
+    body {
+        background-color: #ffffff; 
+        color: #333;
+    }
+
+    .container {
+        max-width: 800px; 
+        margin: 0 auto; 
+    }
+
+    .form-control {
+        background-color: #f8f9fa; 
+        border: 1px solid #ddd; 
+        color: #333; 
+    }
+
+    .form-control::placeholder {
+        color: #999; 
+        font-style: italic;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: #ffffff; 
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3; 
+        border-color: #0056b3; 
+    }
+
+    .btn-link {
+        color: #999;
+    }
+
+    .btn-link:hover {
+        color: #666; 
+    }
+
+    .input-group {
+        position: relative; 
+    }
+
+    .input-group .input-group-append .btn {
+        border-radius: 50px; 
+        margin-left: -1px; 
+    }
+
+    .shadow-sm {
+        box-shadow: 0 .125rem .25rem rgba(0, 0, 0, 0.075); 
+    }
+
+    .fa-search {
+        margin-right: 0.5rem;
+    }
+</style>

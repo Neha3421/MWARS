@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contents %}
+
+<section id="contact" class="contact">
+    <div class="container" data-aos="fade-up">
+        <div class="section-title text-center">
+            <h2 class="text-primary">Admin Login</h2>
+        </div>
+
+        <div class="row justify-content-center mt-1">
+            <div class="col-lg-8 mt-5 mt-lg-0"> <!-- Increased column size for larger card -->
+                <div class="card shadow-lg border-0 rounded-lg">
+                    <div class="card-header bg-primary text-white text-center py-3">
+                        <h4 class="mb-0">Login to Admin Panel</h4>
+                    </div>
+                    <div class="card-body p-4">
+                        <form action="/adminloginaction/" method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6 form-group mb-3">
+                                    <label for="name" class="form-label">Admin Name</label>
+                                    <input type="text" name="name" class="form-control" id="name" placeholder="Enter Admin Name" required>
+                                </div>
+                                <div class="col-md-6 form-group mb-3 mt-md-0">
+                                    <label for="password" class="form-label">Admin Password</label>
+                                    <input type="password" class="form-control" name="pswad" id="password" placeholder="Enter Admin Password" required>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary btn-medium">Login</button>
+                            </div>
+                            <!-- Messages Section -->
+                            {% if messages %}
+                                <div class="alert alert-danger mt-3" role="alert">
+                                    {% for message in messages %}
+                                        {{ message }}<br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Custom styles for admin login interface */
+    .container {
+        max-width: 900px; /* Adjusted for larger card size */
+        margin-top: 50px;
+        padding: 20px;
+    }
+
+    .section-title h2 {
+        font-size: 30px; /* Slightly larger font size */
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #007bff; /* Primary color for consistency */
+    }
+
+    .card {
+        border-radius: 10px;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+        box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-header {
+        font-size: 22px;
+        padding: 15px;
+        background-color: #007bff; /* Blue color */
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-control {
+        border-radius: 5px;
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    .form-control:focus {
+        border-color: #007bff; /* Blue focus border */
+        box-shadow: none;
+    }
+
+    /* Medium Button styling */
+    .btn-medium {
+        padding: 10px 30px; /* Medium padding */
+        font-size: 16px;    /* Medium font size */
+        border-radius: 5px;
+        width: auto;        /* Adjusts based on text */
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .alert {
+        font-size: 14px;
+        padding: 10px;
+    }
+</style>
+
+
+<br><br><br><br><br><br><br><br><br><br>
+{% endblock %}

@@ -1,0 +1,142 @@
+{% extends 'user/userbase.html' %}
+{% load static %}
+
+{% block contents %}
+<br><br><br>
+
+<!-- Main Product Display Section -->
+<div class="box mb-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="row no-gutters">
+                        <!-- Left Side: Image -->
+                        <div class="col-md-5">
+                            <img src="{{ products.image.url }}" class="card-img" alt="{{ products.name }}" style="height: 300px; object-fit: cover; border-radius: 10px 0 0 10px;">
+                        </div>
+                        <!-- Right Side: Description -->
+                        <div class="col-md-7">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title font-weight-bold">{{ products.name }}</h5>
+                                <p class="card-text text-muted text-justify">{{ products.desc }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Separator -->
+<hr class="my-5">
+
+<!-- Recommended Ads Section -->
+<h2 class="text-center mb-5 font-weight-bold">Similar products</h2>
+<div class="container">
+    <div class="row">
+        {% for add in adds %}
+        <div class="col-md-4 mb-4">
+            <a href="{{ add.post_url }}" target="_blank" class="text-decoration-none">
+                <div class="card shadow-sm border-0">
+                    <img src="{{ add.image.url }}" class="card-img-top rounded-top" alt="{{ add.name }}" style="height: 200px; object-fit: cover;">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-muted">{{ add.name }}</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
+
+<style>
+    body {
+        background-color: #ffffff; 
+        color: #333; 
+    }
+
+    .container {
+        max-width: 1200px; 
+        margin: 0 auto; 
+    }
+
+    .card {
+        border: none; 
+        border-radius: 10px; 
+        overflow: hidden; 
+        transition: transform 0.3s ease, box-shadow 0.3s ease; 
+    }
+
+    .card:hover {
+        transform: translateY(-10px); 
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); 
+    }
+
+    .card-title {
+        font-size: 1.5rem; 
+        font-weight: bold; 
+    }
+
+    .card-text {
+        font-size: 1rem; 
+        line-height: 1.5;
+        margin-bottom: 1rem; 
+    }
+
+    .btn {
+        border-radius: 20px; 
+        padding: 0.5rem 1.5rem; 
+    }
+
+    .row.no-gutters {
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    .col-md-5, .col-md-7 {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    hr {
+        border: 0;
+        height: 1px; 
+        background-color: #ddd; 
+        margin: 2rem 0; 
+    }
+
+    h2 {
+        font-size: 2rem; 
+        color: #333;
+        font-weight: bold; 
+    }
+
+    .card-body {
+        padding: 1rem; 
+    }
+
+    .btn-outline-secondary {
+        color: #333; 
+        border-color: #ddd; 
+    }
+
+    .btn-outline-secondary:hover {
+        background-color: #f8f9fa; 
+        color: #007bff; 
+    }
+
+    .shadow-sm {
+        box-shadow: 0 .125rem .25rem rgba(0, 0, 0, 0.075); 
+    }
+
+    @media (max-width: 768px) {
+        .card-img {
+            height: 200px; 
+            object-fit: cover;
+        }
+    }
+</style>
