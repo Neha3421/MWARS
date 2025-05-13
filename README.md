@@ -2,6 +2,7 @@
 Start the Development Server : python manage.py runserver
 
 📢 MWARS – Multi-Website Advertisement Recommendation System
+
 📌 Project Overview
 MWARS (Multi-Website Advertisement Recommendation System) is a smart, scalable web application designed to display personalized advertisements across multiple websites within a unified platform. By analyzing user behavior, interests, and context, MWARS dynamically recommends the most relevant ads for each user, improving engagement and click-through rates for advertisers and enhancing the browsing experience for users.
 
