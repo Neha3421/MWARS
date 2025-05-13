@@ -9,6 +9,7 @@ MWARS (Multi-Website Advertisement Recommendation System) is a smart, scalable w
 Whether you're a publisher managing multiple web properties or a developer building an ad-driven platform, MWARS provides a robust solution for intelligent ad delivery and seamless integration across multiple websites.
 
 🎯 Key Features
+
 🎯 Personalized Advertisement Recommendations based on user interaction and preferences
 
 🌐 Multi-Website Support with consistent styling and structure
